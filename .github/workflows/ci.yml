@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  checks:
+    name: Проверка документации
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Получить код
+        uses: actions/checkout@v4
+
+      - name: Проверить наличие обязательных файлов
+        run: |
+          set -e
+          for f in README.md CONTRIBUTING.md CHANGELOG.md LICENSE .gitignore; do
+            if [ ! -f "$f" ]; then
+              echo "::error::Отсутствует обязательный файл $f"
+              exit 1
+            fi
+          done
+          for f in docs/requirements.md docs/process.md; do
+            if [ ! -f "$f" ]; then
+              echo "::error::Отсутствует обязательный документ $f"
+              exit 1
+            fi
+          done
+          echo "Все обязательные файлы на месте"
+
+      - name: Проверить, что нет пробелов в конце строк
+        run: |
+          if grep -rnI --include='*.md' ' $' . ; then
+            echo "::error::Найдены пробелы в конце строк"
+            exit 1
+          fi
+          echo "Пробелов в конце строк нет"
+
+      - name: Проверить, что файлы заканчиваются переводом строки
+        run: |
+          set -e
+          fail=0
+          while IFS= read -r f; do
+            if [ -n "$(tail -c 1 "$f")" ]; then
+              echo "::error file=$f::Файл не заканчивается переводом строки"
+              fail=1
+            fi
+          done < <(find . -name '*.md' -not -path './.git/*')
+          exit $fail
+
+      - name: Проверить, что нет незакрытых конфликтов слияния
+        run: |
+          if grep -rnI -E '^(<<<<<<<|=======|>>>>>>>)' --include='*.md' . ; then
+            echo "::error::Найдены маркеры конфликта слияния"
+            exit 1
+          fi
+          echo "Маркеров конфликта нет"
+
+      - name: Проверить, что нет похожего на секреты
+        run: |
+          if grep -rnI -E '(api[_-]?key|secret|password|token)\s*[:=]\s*["'\'']?[A-Za-z0-9_\-]{16,}' \
+              --include='*.md' --include='*.yml' --include='*.yaml' . ; then
+            echo "::error::Похоже на секрет в открытом виде"
+            exit 1
+          fi
+          echo "Секретов не обнаружено"
+
+      - name: Проверить оформление Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: '**/*.md'

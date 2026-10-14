@@ -43,7 +43,7 @@
 | [docs/roadmap.md](docs/roadmap.md) | Дорожная карта |
 | [docs/gantt.md](docs/gantt.md) | План семестра |
 | [docs/process.md](docs/process.md) | Процесс команды, DoR, DoD |
-| [CHANGELOG.md](docs/CHANGELOG.md) | Журнал изменений |
+| [CHANGELOG.md](CHANGELOG.md) | Журнал изменений |
 
 ## Лицензия
 
