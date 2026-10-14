@@ -73,3 +73,4 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v16
         with:
           globs: '**/*.md'
+          config: '.markdownlint-cli2.yaml'

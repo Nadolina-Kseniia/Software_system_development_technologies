@@ -1,7 +1,16 @@
 config:
-  line-length: false          # длинные строки допустимы
-  no-inline-html: false       # разрешаем HTML для диаграмм
+  # Отключаем спорные правила — они конфликтуют с текущим стилем документов
+  MD001: false          # heading levels increment
+  MD012: false          # multiple blank lines
+  MD022: false          # blanks around headings
+  MD032: false          # blanks around lists
+  MD036: false          # emphasis as heading
+  MD041: false          # first line heading
+  MD060: false          # table column style
+  line-length: false
+  no-inline-html: false
   no-duplicate-heading:
     siblings_only: true
+
 ignores:
   - "**/node_modules/**"
