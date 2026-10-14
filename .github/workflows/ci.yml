@@ -34,7 +34,7 @@ jobs:
 
       - name: Проверить, что нет пробелов в конце строк
         run: |
-          if grep -rnI --include='*.md' ' $' . ; then
+          if grep -rnI --include='*.yml' --include='*.yaml' ' $' . ; then
             echo "::error::Найдены пробелы в конце строк"
             exit 1
           fi
