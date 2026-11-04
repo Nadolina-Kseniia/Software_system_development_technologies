@@ -28,6 +28,4 @@ async def health() -> HealthResponse:
 async def version(
     settings: Annotated[Settings, Depends(get_settings)],
 ) -> VersionResponse:
-    return VersionResponse(
-        version=settings.app_version, environment=settings.environment
-    )
+    return VersionResponse(version=settings.app_version, environment=settings.environment)

@@ -95,6 +95,14 @@ jobs:
       - name: Tests
         run: uv run pytest --cov=src/booking --cov-report=term-missing --cov-fail-under=70
 
+      - name: Domain layer stays independent
+        run: |
+          if grep -rn "fastapi\|asyncpg\|httpx" src/booking/domain src/booking/services; then
+            echo "Ошибка: Предметная логика зависит от каркаса или драйверов!"
+            exit 1
+          fi
+          echo "Слои изолированы друг от друга."
+
   image:
     name: Docker image builds
     runs-on: ubuntu-latest

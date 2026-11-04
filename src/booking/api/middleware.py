@@ -29,9 +29,7 @@ async def request_context(
     try:
         response = await call_next(request)
     except Exception:
-        logger.exception(
-            "request_failed", duration_ms=int((time.perf_counter() - started) * 1000)
-        )
+        logger.exception("request_failed", duration_ms=int((time.perf_counter() - started) * 1000))
         raise
 
     logger.info(

@@ -6,7 +6,8 @@ import structlog
 from fastapi import FastAPI
 from starlette.middleware.base import BaseHTTPMiddleware
 
-from booking.api import system
+# Добавили bookings в импорт
+from booking.api import bookings, system
 from booking.api.middleware import request_context
 from booking.config import Settings, get_settings
 from booking.logging import configure_logging
@@ -18,7 +19,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     app = FastAPI(title="Booking API", version=settings.app_version)
     app.add_middleware(BaseHTTPMiddleware, dispatch=request_context)
+
+    # Подключаем роутеры
     app.include_router(system.router)
+    app.include_router(bookings.router)
 
     app.dependency_overrides.setdefault(get_settings, lambda: settings)
 
