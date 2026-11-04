@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "Elizaveta Shingina", email = "shinginaelizaveta@mail.ru" }
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.13"
 dependencies = [
     "fastapi[standard]>=0.128.8",
     "pydantic-settings>=2.11.0",
@@ -28,3 +28,22 @@ dev = [
     "pytest-cov>=7.1.0",
     "ruff>=0.17.3",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM", "RUF"]
+ignore = ["N818"]
+
+[tool.mypy]
+python_version = "3.13"
+disallow_untyped_defs = true
+warn_unused_ignores = true
+warn_return_any = true
