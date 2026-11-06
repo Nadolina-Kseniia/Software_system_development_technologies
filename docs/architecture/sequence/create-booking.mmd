@@ -1,0 +1,26 @@
+sequenceDiagram
+    actor V as Водитель
+    participant W as Web App (Браузер)
+    participant A as API (FastAPI)
+    participant D as База данных
+
+    V->>W: Нажимает "Забронировать"
+    W->>A: POST /v1/bookings (garage_id, time)
+    A->>A: Валидация данных (pydantic)
+
+    alt Неверные данные (окончание раньше начала)
+        A-->>W: 422 Unprocessable Entity
+        W-->>V: Показ ошибки "Проверьте время"
+    else Данные корректны
+        A->>D: Поиск пересекающихся броней в БД
+        D-->>A: Список пересечений
+        alt Место уже занято
+            A-->>W: 409 Conflict
+            W-->>V: Показ ошибки "Место уже занято"
+        else Место свободно
+            A->>D: INSERT в таблицу bookings
+            D-->>A: Успех (id брони)
+            A-->>W: 201 Created (данные брони)
+            W-->>V: Показ экрана успешного бронирования
+        end
+    end
