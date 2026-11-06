@@ -1,0 +1,19 @@
+flowchart TB
+    Driver["Водитель"]
+
+    subgraph boundary["ПаркТепло"]
+        Web["Web App<br/><i>Vue.js</i><br/>Интерфейс"]
+        API["API Backend<br/><i>Python/FastAPI</i><br/>Логика"]
+        DB[("База данных<br/><i>PostgreSQL</i><br/>Брони, Гаражи")]
+    end
+
+    Driver -->|"Открывает в браузере<br/>HTTPS"| Web
+    Web -->|"Запросы<br/>JSON/HTTP"| API
+    API -->|"Чтение/Запись<br/>SQL"| DB
+
+    classDef actor fill:#E8EEF7,stroke:#4A7DB5,color:#16202E
+    classDef sys fill:#FBF0EC,stroke:#E2603A,color:#16202E
+    classDef store fill:#ECF6F4,stroke:#3E9E8F,color:#16202E
+    class Driver actor
+    class Web,API sys
+    class DB store
