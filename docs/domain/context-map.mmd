@@ -1,0 +1,17 @@
+flowchart LR
+    subgraph own["Наша система"]
+        booking["Бронирование<br/><i>основной контекст</i><br/>места, брони, пересечения"]
+        access["Учёт пользователей<br/><i>поддерживающий</i><br/>водители, владельцы, роли"]
+    end
+
+    payment["Платёжный шлюз<br/><i>чужая система</i>"]
+
+    access -->|"поставщик — потребитель<br/>идентификатор и роль"| booking
+    booking -->|"уровень предотвращения искажений<br/>факт события, не текст"| payment
+
+    classDef core fill:#FBF0EC,stroke:#E2603A,color:#16202E
+    classDef sup fill:#ECF6F4,stroke:#3E9E8F,color:#16202E
+    classDef ext fill:#F1F3F6,stroke:#5B6472,color:#16202E
+    class booking core
+    class access sup
+    class payment ext
