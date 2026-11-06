@@ -1,0 +1,25 @@
+erDiagram
+    USERS {
+        uuid id PK
+        string email UK
+        string role "driver | owner"
+    }
+    GARAGES {
+        uuid id PK
+        uuid owner_id FK
+        boolean is_heated
+        boolean has_socket
+        decimal price_per_hour
+    }
+    BOOKINGS {
+        uuid id PK
+        uuid garage_id FK
+        uuid driver_id FK
+        timestamp starts_at
+        timestamp ends_at
+        string status "active | cancelled"
+    }
+
+    USERS ||--o{ GARAGES : "владеет"
+    USERS ||--o{ BOOKINGS : "создает"
+    GARAGES ||--o{ BOOKINGS : "бронируется"

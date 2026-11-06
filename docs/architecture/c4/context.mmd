@@ -1,0 +1,18 @@
+flowchart TB
+    Driver["Водитель<br/><i>человек</i><br/>Ищет и бронирует"]
+    Owner["Владелец<br/><i>человек</i><br/>Сдает гараж"]
+
+    System["ПаркТепло<br/><i>система</i><br/>Бронирование гаражей"]
+
+    Payment["Платежный шлюз<br/><i>внешняя система</i>"]
+
+    Driver -->|"Бронирует<br/>HTTPS"| System
+    Owner -->|"Добавляет гараж<br/>HTTPS"| System
+    System -->|"Списывает оплату<br/>API"| Payment
+
+    classDef actor fill:#E8EEF7,stroke:#4A7DB5,color:#16202E
+    classDef sys fill:#FBF0EC,stroke:#E2603A,color:#16202E
+    classDef ext fill:#F1F3F6,stroke:#5B6472,color:#16202E
+    class Driver,Owner actor
+    class System sys
+    class Payment ext
